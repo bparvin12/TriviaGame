@@ -1,45 +1,83 @@
 $(document).ready(function(){
 
     // at the start of the game, only slide one shows
-function start() {
-    $(".slide2").hide();
 
-    $(".start").on('click', function() {
-        $(".slide1").hide();
-        $(".slide2").show();
-    });
-}
 
-function displayQuestion () {
-    $(".questionNumber").html("Question: ");
-    $(".question").html("<h4>" + quest1.trivQuestion + "</h4>");
-    $(".ans1").html(quest1.trivAnswer1);
-    $(".ans2").html(quest1.trivAnswer2);
-    $(".ans3").html(quest1.trivAnswer3);
-    $(".ans4").html(quest1.trivAnswer4);
+var card = $(".question");
+var start = 30 //30 seconds
+
+var questions = [
+    {
+        question: "In Harry Potter and the Philosopher's Stone which Gringott's Vault was the Philosopher's Stone kept in?",
+        answers: [703, 507, 713, 217],
+        correctAnswer: 713,
+    },
+    {
+        question: "What is Lord Voldemort's real name?",
+        answers: ["Salazar Slytherin", "Tom Marvolo Riddle", "Gellert Grindelwald", "Morfin Gaunt"],
+        correctAnswer: "Tom Marvolo Riddle",
+    },
+    {
+        question: "Who destroyed the last remaining Horcrux?",
+        answers: ["Neville Longbottom", "Ron Weasley", "Hermione Granger", "Harry Potter"],
+        correctAnswer: "Neville Longbottom",
+    },
+]
+
+var timer;
+
+var game = {
+    questions: questions,
+    currentQuestion: 0,
+    startTimer: start,
+    correct: 0,
+    incorrect: 0,
+    // unanswered: 0,
+
+    countdown: function(){
+        this.startTimer--;
+        $(".timeRemaining").text(this.startTimer);
+        if (this.startTimer === 0) {
+            console.log("time is up");
+            this.timeUp();
+        }
+    },
+
+    loadQuestion: function() {
+        timer = setInterval(this.countdown.bind(this), 1000);
+        card.html("<h3>" + questions[this.currentQuestion.question] + "</h3>");
+        for (var i = 0; i < questions[this.currentQuestion].answers.length; i++) {
+            $(".ans").append("<a href='#' class='list-group-item list-group-item-action list-group-item-dark'>" + questions[this.currentQuestion].answers[i] + "</a>");
+        };
+    },
+
+    nextQuestion: function(){
+        this.currentQuestion++;
+    },
+
+    start: function() {
+        $(".slide2").hide();
     
-};
-
-
-
-
-
-function Trivia (q, a1, a2, a3, a4, correct) {
-    this.trivQuestion = q;
-    this.trivAnswer1 = a1;
-    this.trivAnswer2 = a2;
-    this.trivAnswer3 = a3;
-    this.trivAnswer4 = a4;
-    this.trivCorrect = correct
+        $(".start").on('click', function() {
+            $(".slide1").hide();
+            $(".slide2").show();
+        });
+    },
 }
 
-var quest1 = new Trivia("In Harry Potter and the Philosopher's Stone which Gringott's Vault was the Philosopher's Stone kept in?", 703, 507, 713, 217, 713);
-var quest2 = new Trivia("What is Lord Voldemort's real name?", "Salazar Slytherin", "Tom Marvolo Riddle", "Gellert Grindelwald", "Morfin Gaunt", "Tom Marvolo Riddle");
-var quest3 = new Trivia("Who destroyed the last remaining Horcrux?", "Neville Longbottom", "Ron Weasley", "Hermione Granger", "Harry Potter", "Neville Longbottom");
 
 
-displayQuestion ();
-start();
+
+
+
+
+
+// $(document).on('click', "#start-over", game.reset.bind(game));
+
+$(".start").on('click', function(){
+    game.loadQuestion.bind(game)();
+});
+
 
 
 
