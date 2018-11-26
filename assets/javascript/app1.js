@@ -10,19 +10,16 @@ function start() {
     });
 }
 
-var showQuestion;
-
-var answerShowingRunning = false;
-
-var count = 1;
-
-$(".ans1, .ans2, .ans3, .ans4").on('click', function() {
-    startAnswerShowing();
-});
-
 function displayQuestion () {
-    $(".questionNumber").html("Question: " + count++);
+    $(".questionNumber").html("Question: ");
+    $(".question").html("<h4>" + quest1.trivQuestion + "</h4>");
+    $(".ans1").html(quest1.trivAnswer1);
+    $(".ans2").html(quest1.trivAnswer2);
+    $(".ans3").html(quest1.trivAnswer3);
+    $(".ans4").html(quest1.trivAnswer4);
+    
 };
+
 
 
 
