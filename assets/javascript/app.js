@@ -1,36 +1,38 @@
 $(document).ready(function(){
 
-
-var number = 5;
-var intervalId;
-
-function run() {
-    clearInterval(intervalId);
-    intervalId = setInterval(decrement, 1000);
-    $(".slide2").hide();
-    $(".slide3").hide();
+    // at the start of the game, only slide one shows
+function start() {
+    $(".slide2, .slide3, .slide4").hide();
 }
 
-function decrement () {
-    number--;
-    $(".timeRemaining").html("<h4>" + number + "</h4>");
+// upon selecting start the game moves to the second slide
+$(".start").on('click', function() {
+    $(".slide1, .slide3, .slide4").hide();
+    $(".slide2").show();
+});
 
-    if (number === 0) {
-        stop ();
-        $(".slide1").hide();
-        $(".slide2").show();   
-    }
-    
-}
+//clicking the right or wrong answer brings up slide three
+$(".wrong1").on('click', function () {
+    $(".slide1, .slide2, .slide4").hide();
+    $(".slide3").show();
+});
+
+$(".right1").on('click', function () {
+    $(".slide1, .slide2, .slide4").hide();
+    $(".slide3").show();
+});
 
 
 
-function stop () {
-    clearInterval(intervalId);
-}
 
-run();
-// run1();
+start();
+
+
+
+
+
+
+
 
 // end brackets of document ready
 })
