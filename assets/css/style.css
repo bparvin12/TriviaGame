@@ -1,8 +1,15 @@
 * {
     box-sizing: border-box;
     text-align: center;
+    font-family: 'Henny Penny', cursive;
 }
 
 .jumbotron {
     font-family: 'Henny Penny', cursive;
+    font-weight: bolder;
 }
+
+#start-over {
+    text-align: center;
+}
+

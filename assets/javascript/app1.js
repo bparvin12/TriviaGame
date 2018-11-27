@@ -82,14 +82,14 @@ var game = {
 
         $("#counter-number").html(this.counter);
 
-        card.html("<h2>Out of Time!</h2>");
+        card.html("<h2>Merlin's Beard! You are out of time!</h2>");
         card.append("<h3>The Correct Answer was: " + questions[this.currentQuestion].correctAnswer);
 
         if(this.currentQuestion === questions.length - 1) {
-            setTimeout(this.results, 2000);
+            setTimeout(this.results, 3000);
         }
         else {
-            setTimeout(this.nextQuestion, 2000);
+            setTimeout(this.nextQuestion, 3000);
         }
     },
 
@@ -97,14 +97,14 @@ var game = {
         
         clearInterval(timer);
 
-        card.html("<h2>All done, heres how you did!</h2>");
+        card.html("<br><strong><h2>Mischief Managed!</h2></strong><br>");
 
         $("#counter-number").text(game.counter);
 
-        card.append("<h3>Correct Answers: " + game.correct + "</h3>");
-        card.append("<h3>Incorrect Answers: " + game.incorrect + "</h3>");
-        card.append("<h3>Unanswered: " + (questions.length - (game.incorrect + game.correct)) + "</h3>");
-        card.append("<br><button id='start-over'>Start Over?</button>");
+        card.append("<h3>Horcruxes Destroyed: " + game.correct + "</h3><br>");
+        card.append("<h3>Horcruxes Alive: " + game.incorrect + "</h3><br>");
+        card.append("<h3>Unfound Horcruxes: " + (questions.length - (game.incorrect + game.correct)) + "</h3>");
+        card.append("<br><button id='start-over'>Play Again?</button>");
     },
 
     clicked: function(variable) {
@@ -121,14 +121,14 @@ var game = {
         this.incorrect++;
         clearInterval(timer);
 
-        card.html("<h2>Incorrect! Minus 5 points from Griffindor!</h2>");
-        card.append("<h3>The Correct Answer was: " + questions[this.currentQuestion].correctAnswer + "</h3>");
+        card.html("<br><h2>Incorrect! Minus 5 points from Griffindor!</h2>");
+        card.append("<br><h3>The Correct Answer was: " + questions[this.currentQuestion].correctAnswer + "</h3>");
 
         if (this.currentQuestion === questions.length - 1) {
-            setTimeout(this.results, 2000);
+            setTimeout(this.results, 3000);
           }
         else {
-            setTimeout(this.nextQuestion, 2000);
+            setTimeout(this.nextQuestion, 3000);
         }
     },
 
@@ -138,13 +138,13 @@ var game = {
 
         this.correct++;
         
-        card.html("<h2>Correct! Plus 5 points for Griffindor!</h2>");
+        card.html("<br><h2>Correct! 5 points for Griffindor!</h2>");
        
         if (this.currentQuestion === questions.length - 1) {
-            setTimeout(this.results, 2000);
+            setTimeout(this.results, 3000);
           }
           else {
-            setTimeout(this.nextQuestion, 2000);
+            setTimeout(this.nextQuestion, 3000);
           }
 
     },
