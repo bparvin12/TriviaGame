@@ -9,8 +9,8 @@ var countStartNumber = 30; //30 seconds
 var questions = [
     {
         question: "In Harry Potter and the Philosopher's Stone which Gringott's Vault was the Philosopher's Stone kept in?",
-        answers: [703, 507, 713, 217],
-        correctAnswer: 713,
+        answers: ["703", "507", "713", "217"],
+        correctAnswer: "713",
     },
     {
         question: "What is Lord Voldemort's real name?",
@@ -22,7 +22,22 @@ var questions = [
         answers: ["Neville Longbottom", "Ron Weasley", "Hermione Granger", "Harry Potter"],
         correctAnswer: "Neville Longbottom",
     },
-];
+    {
+        question: "Who does Hermione impersonate using polyjuice potion when she, Ron, and Harry break into Gringotts?",
+        answers: ["Bellatrix LeStrange", "Narcissa Malfoy", "Dumbledore", "Professor McGonagall"],
+        correctAnswer: "Bellatrix LeStrange",
+    },
+    {
+        question: "What color is the Weasley's flying car?",
+        answers: ["Red", "Yellow", "Blue", "Black"],
+        correctAnswer: "Blue",
+    },
+    {
+        question: "Which house team does Harry play agaisnt in his first Quidditch match?",
+        answers: ["Slytherin", "Ravenclaw", "Hufflepuff", "Griffindor"],
+        correctAnswer: "Slytherin",
+    }
+]
 
 var timer;
 
@@ -34,7 +49,7 @@ var game = {
     incorrect: 0,
     // unanswered: 0,
 
-    countdown: function(){
+    countdown: function() {
         this.counter--;
         $("#counter-number").text(this.counter);
         if (this.counter === 0) {
@@ -43,19 +58,21 @@ var game = {
     },
 
     loadQuestion: function() {
-        timer = setInterval(this.countdown.bind(this), 1000);
 
-        card.html("<h2>" + questions[this.currentQuestion].question + "</h2>");
+        timer = setInterval(game.countdown.bind(this), 1000);
+
+        card.html("<br><h3>" + questions[this.currentQuestion].question + "</h3><br>");
 
         for (var i = 0; i < questions[this.currentQuestion].answers.length; i++) {
-            card.append("<button class='answer-button' id='button' data-name='" + questions[this.currentQuestion].answers[i] + "'>" + questions[this.currentQuestion].answers[i] + "</button");  
+            card.append("<button class='answer-button btn btn-primary' id='button' data-name='" + questions[this.currentQuestion].answers[i] + "'>" 
+            + questions[this.currentQuestion].answers[i] + "</button>");  
         }
     },
 
-    nextQuestion: function(){
-        this.counter = countStartNumber;
-        $('#counter-number').text(this.counter);
-        this.currentQuestion++;
+    nextQuestion: function() {
+        game.counter = countStartNumber;
+        $("#counter-number").html(this.counter);
+        game.currentQuestion++;
         game.loadQuestion();
     },
 
@@ -63,16 +80,16 @@ var game = {
 
         clearInterval(timer);
 
-        $('#counter-number').html(this.counter);
+        $("#counter-number").html(this.counter);
 
         card.html("<h2>Out of Time!</h2>");
         card.append("<h3>The Correct Answer was: " + questions[this.currentQuestion].correctAnswer);
 
-        if(this.currentQuestion === questions.length -1) {
-            setTimeout(this.results, 3000);
+        if(this.currentQuestion === questions.length - 1) {
+            setTimeout(this.results, 2000);
         }
         else {
-            setTimeout(this.nextQuestion, 3000);
+            setTimeout(this.nextQuestion, 2000);
         }
     },
 
@@ -82,50 +99,52 @@ var game = {
 
         card.html("<h2>All done, heres how you did!</h2>");
 
-        $("#counter-number").text(this.counter);
+        $("#counter-number").text(game.counter);
 
-        card.append("<h3>Correct Answers: " + this.correct + "</h3>");
-        card.append("<h3>Incorrect Answers: " + this.incorrect + "</h3>");
-        card.append("<h3>Unanswered: " + (questions.length - (this.incorrect + this.correct)) + "</h3>");
+        card.append("<h3>Correct Answers: " + game.correct + "</h3>");
+        card.append("<h3>Incorrect Answers: " + game.incorrect + "</h3>");
+        card.append("<h3>Unanswered: " + (questions.length - (game.incorrect + game.correct)) + "</h3>");
         card.append("<br><button id='start-over'>Start Over?</button>");
     },
 
     clicked: function(variable) {
         clearInterval(timer);
         if ($(variable.target).attr("data-name") === questions[this.currentQuestion].correctAnswer) {
-            this.answeredCorrectly ();
+            this.answeredCorrectly();
         }
         else {
-            this.answeredInCorrectly ();
+            this.answeredIncorrectly();
         }
     },
 
-    answeredInCorrectly: function () {
+    answeredIncorrectly: function () {
         this.incorrect++;
         clearInterval(timer);
 
-        card.html("<h2>Incorrect! Minus 5 point from Griffindor!");
-        card.append("<h3>The Correct Answer was: " + questions[game.currentQuestion].correctAnswer + "</h3>");
+        card.html("<h2>Incorrect! Minus 5 points from Griffindor!</h2>");
+        card.append("<h3>The Correct Answer was: " + questions[this.currentQuestion].correctAnswer + "</h3>");
 
         if (this.currentQuestion === questions.length - 1) {
-            setTimeout(this.results, 3 * 1000);
+            setTimeout(this.results, 2000);
           }
-          else {
-            setTimeout(this.nextQuestion, 3 * 1000);
-          }
+        else {
+            setTimeout(this.nextQuestion, 2000);
+        }
     },
 
     answeredCorrectly: function() {
-        this.correct++;
-        clearInterval(timer);
         
-        card.html("<h2>Correct! Plus 5 points for Griffindor!");
+        clearInterval(timer);
+
+        this.correct++;
+        
+        card.html("<h2>Correct! Plus 5 points for Griffindor!</h2>");
        
         if (this.currentQuestion === questions.length - 1) {
-            setTimeout(this.results, 3 * 1000);
+            setTimeout(this.results, 2000);
           }
           else {
-            setTimeout(this.nextQuestion, 3 * 1000);
+            setTimeout(this.nextQuestion, 2000);
           }
 
     },
@@ -139,21 +158,18 @@ var game = {
     }, 
 };
 
-
-
-
-
-
-
-
-// $(document).on('click', "#start-over", game.reset.bind(game));
-
-$(".start").on('click', function(){
-    game.loadQuestion.bind(game)();
-    // game.countdown.bind(game)();
+$(document).on('click', "#start-over", function() {
+    game.reset.bind(game)();
 });
 
+$(document).on('click', ".answer-button", function(variable) {
+    game.clicked(variable);
+});
 
+$(document).on('click', "#start", function () {
+    $("#wrapper").prepend("<h2>Time Remaining: <span id='counter-number'>30</span> Seconds</h2>");
+    game.loadQuestion.bind(game)();
+});
 
 
 
